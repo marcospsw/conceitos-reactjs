@@ -13,36 +13,38 @@ function App() {
   }, []);
 
   async function handleAddRepository() {
-    const response = await api.post('/repositories', {
-      id: "123",
-      url: "https://github.com/josepholiveira",
-      title: "Desafio ReactJS",
-      techs: ["React", "Node.js"]
+    const response = await api.post('/repositories',
+    {
+      url: "https://github.com/Rocketseat/umbriel",
+      title: "Umbriel",
+      techs: ["Node", "Express", "TypeScript"]
     });
-
-    console.log(response);
 
     const repository = response.data
 
     setRepositories([...repositories, repository]);
 
-    console.log(repositories)
   }
 
-  async function handleRemoveRepository(id) {
-    // TODO
+
+  async function handleRemoveRepository(id) {    
+    const newRepository = [];
+
+    api.delete(`/repositories/${id}`);
+
+    setRepositories(newRepository);  
   }
 
   return (
     <div>
-      <ul data-testid="repository-list">
-        <li>
-          {/* {repositories.map(repository => <li key={repository.id}>{repository.title}</li>)} */}
-
-          <button onClick={() => handleRemoveRepository(1)}>
-            Remover
+      <ul data-testid="repository-list">    
+        {repositories.map(repository => <li key={repository.id}>
+          {repository.title}
+          <button onClick={() => handleRemoveRepository(repository.id)}>
+          Remover
           </button>
-        </li>
+        </li>)}       
+      
       </ul>
 
       <button onClick={handleAddRepository}>Adicionar</button>
